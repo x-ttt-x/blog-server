@@ -1,7 +1,9 @@
-package com.example.backend.pojo.dto.Article;
+package com.example.backend.pojo.Article.dto;
 
 import lombok.Data;
-import org.antlr.v4.runtime.misc.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class ArticleDto {
@@ -14,5 +16,8 @@ public class ArticleDto {
     private String summary;
     /// 备注
     private String desc;
-
+    /// 分类Id
+    private int categoryId;
+    /// 标签idList
+    private List<Integer> tagIdList;
 }

@@ -1,21 +1,26 @@
 package com.example.backend.service;
 
-import com.example.backend.pojo.dto.CategoryDto;
-import com.example.backend.pojo.vo.Category.CategoryVo;
+import com.example.backend.dao.Category;
+import com.example.backend.pojo.Category.dto.CategoryDto;
 
 import java.util.List;
 
 public interface ICategoryService {
 
-    void add(CategoryDto articleDto);
+    /// 增
+    void create(CategoryDto categoryDto);
 
-    /// 删除也算在更新里面
-//    void update(CategoryUpdateDto articleUpdateDto);
+    /// 删
+    void delete(int id);
 
-//    CategoryVo get(int id);
+    /// 查
+    Category get(int id);
 
-    List<CategoryVo> getList(int pageSize, int currPage);
+    /// 查全量
+    List<Category> get();
 
-    long getTotal();
+    /// 查
+    void update(CategoryDto categoryDto, int id);
+
 
 }

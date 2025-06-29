@@ -1,19 +1,16 @@
-package com.example.backend.pojo.vo.Category;
+package com.example.backend.pojo.Tag.Vo;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class CategoryVo {
-    /// id
-    private long id;
-    /// 分类名称
+public class TagVo {
+
+    private int tagId;
     private String name;
-    /// 分类备注
     private String desc;
-    /// 创建时间
+    private String color;
     private LocalDateTime createdTime;
-    /// 更新时间
     private LocalDateTime updatedTime;
 }

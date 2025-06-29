@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.pojo.dto.UserDto;
+import com.example.backend.pojo.User.dto.UserDto;
 import com.example.backend.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

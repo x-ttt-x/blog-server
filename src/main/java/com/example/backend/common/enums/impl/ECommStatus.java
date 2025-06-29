@@ -5,7 +5,7 @@ import com.example.backend.utils.enumConvert;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ECategoryStatus implements IDbEnum<Integer> {
+public enum ECommStatus implements IDbEnum<Integer> {
 
 
     /// 未删除
@@ -22,9 +22,9 @@ public enum ECategoryStatus implements IDbEnum<Integer> {
         return dbValue;
     }
 
-    public static class Converter extends enumConvert<ECategoryStatus, Integer> {
+    public static class Converter extends enumConvert<ECommStatus, Integer> {
         Converter() {
-            super(ECategoryStatus.class);
+            super(ECommStatus.class);
         }
     }
 

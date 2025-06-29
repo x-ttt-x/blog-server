@@ -1,7 +1,7 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dao.User;
-import com.example.backend.pojo.dto.UserDto;
+import com.example.backend.pojo.User.dto.UserDto;
 import com.example.backend.repository.UserRep;
 import com.example.backend.service.IUserService;
 import org.springframework.beans.BeanUtils;

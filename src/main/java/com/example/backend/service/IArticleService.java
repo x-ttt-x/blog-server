@@ -1,25 +1,17 @@
 package com.example.backend.service;
 
 
-import com.example.backend.pojo.dto.Article.ArticleDto;
-import com.example.backend.pojo.dto.Article.ArticleUpdateDto;
-import com.example.backend.pojo.vo.Article.ArticleOfListVo;
-import com.example.backend.pojo.vo.Article.ArticleVo;
+import com.example.backend.dao.Article;
+import com.example.backend.pojo.Article.dto.ArticleDto;
 
 import java.util.List;
 
 public interface IArticleService {
 
-    void add(ArticleDto articleDto);
+    void create(ArticleDto articleDto);
 
-    /// 删除也算在更新里面
-    void update(ArticleUpdateDto articleUpdateDto);
+    List<Article> get();
 
-    ArticleVo get(int id);
-
-    List<ArticleOfListVo> getList(int pageSize, int currPage);
-
-    long getTotal();
-
+    Article get(int id);
 
 }

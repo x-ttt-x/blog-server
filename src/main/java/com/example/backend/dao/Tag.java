@@ -1,47 +1,45 @@
 package com.example.backend.dao;
 
 import com.example.backend.common.enums.impl.ECommStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "tb_category")
 @Data
 @Entity
 @DynamicInsert
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Category {
+@Table(name = "tb_tag")
+public class Tag {
 
     @Id
-    @Column(name = "category_id")
+    @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int categoryId;
+    private int tagId;
 
-    @Column(name = "category_name")
+    @Column(name = "tag_name")
     private String name;
 
-    @Column(name = "category_desc")
+    @Column(name = "tag_color")
+    private String color;
+
+    @Column(name = "tag_desc")
     private String desc;
 
-    @Column(name = "category_status", columnDefinition = "tinyint default 0")
+    @Column(name = "tag_status", columnDefinition = "tinyint default 0")
     private ECommStatus status;
 
-    @Column(name = "category_created_time")
+    @ManyToMany(mappedBy = "tags")
+    private Set<Article> articles = new HashSet<>();
+
+    @Column(name = "tag_created_time")
     private LocalDateTime createdTime;
 
-    @Column(name = "category_updated_time")
+    @Column(name = "tag_updated_time")
     private LocalDateTime updatedTime;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("category")
-    private Set<Article> article = new HashSet<>();
 
 
     @PrePersist
@@ -56,6 +54,5 @@ public class Category {
         //自动生成更新时间
         this.updatedTime = LocalDateTime.now();
     }
-
 
 }

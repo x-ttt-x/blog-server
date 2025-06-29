@@ -67,5 +67,13 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    /// 错误，自定义名称
+    public static <T> ApiResponse<T> error(EResCode ECode, String msg) {
+        return ApiResponse.<T>builder()
+                .code(ECode.getCode())
+                .msg(msg)
+                .build();
+    }
+
 
 }

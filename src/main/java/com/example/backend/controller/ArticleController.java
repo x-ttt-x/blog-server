@@ -1,18 +1,21 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.enums.impl.EArticleStatus;
 import com.example.backend.common.enums.others.EResCode;
+import com.example.backend.common.exception.BusinessException;
 import com.example.backend.common.res.ApiResponse;
-import com.example.backend.common.res.ListData;
 import com.example.backend.dao.Article;
-import com.example.backend.pojo.dto.Article.ArticleDto;
-import com.example.backend.pojo.vo.Article.ArticleOfListVo;
-import com.example.backend.pojo.vo.Article.ArticleVo;
+import com.example.backend.pojo.Article.dto.ArticleDto;
+import com.example.backend.pojo.Article.vo.ArticleOfListVo;
+import com.example.backend.pojo.Article.vo.ArticleVo;
 import com.example.backend.service.impl.ArticleServiceImpl;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/article")
@@ -21,41 +24,50 @@ public class ArticleController {
 
     public final ArticleServiceImpl articleService;
 
-    @GetMapping("/test")
-    public ApiResponse<Article> test() {
-        Article article = new Article();
-        return ApiResponse.success(article);
-    }
-
-    /// 添加文章
-    @PostMapping("/add")
-    public ApiResponse<Article> add(@RequestBody ArticleDto articleDto) {
-        articleService.add(articleDto);
+    @PostMapping
+    public ApiResponse<Article> create(@RequestBody ArticleDto articleDto) {
+        articleService.create(articleDto);
         return ApiResponse.success();
     }
 
-    /// 获取文章列表
-    @GetMapping("/getList")
-    public ApiResponse<ListData<ArticleOfListVo>> getList(@RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int currPage) {
-        List<ArticleOfListVo> articlesOfListVo = articleService.getList(pageSize, currPage);
-        long total = articleService.getTotal();
-        return ApiResponse.success(new ListData<>(articlesOfListVo, total));
+    @GetMapping("/{id}")
+    public ApiResponse<ArticleVo> get(@PathVariable int id) {
+        Article article = articleService.get(id);
+        return ApiResponse.success(new ArticleVo(article));
     }
 
-    /// 获取文章内容
-    @GetMapping("/get")
-    public ApiResponse<ArticleVo> get(@RequestParam int id) {
-        ArticleVo articleVo = articleService.get(id);
-        if (articleVo == null) {
-            return ApiResponse.error(EResCode.NOT_FOUND);
+    @GetMapping
+    public ApiResponse<List<ArticleOfListVo>> getAll() {
+        List<Article> articleList = articleService.get();
+        return ApiResponse.success(articleList.stream().map(ArticleOfListVo::new).toList());
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<Article> update(@PathVariable int id, @RequestBody ArticleDto articleDto) {
+        articleService.update(id, articleDto);
+        return ApiResponse.success();
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<Article> delete(@PathVariable int id) {
+        articleService.delete(id);
+        return ApiResponse.success();
+    }
+
+    @PatchMapping("/{id}")
+    public ApiResponse<Article> patch(@PathVariable int id, @RequestParam String status) {
+        if (!EArticleStatus.isEnumNameExist(status) || status.equals("DELETED")) {
+            return ApiResponse.error(EResCode.INVALID_PARAMETER);
         }
-        return ApiResponse.success(articleVo);
+        articleService.changeStatus(id, EArticleStatus.valueOf(status));
+        return ApiResponse.success();
     }
 
-    /// 更新文章相关内容
-    @PostMapping("/update")
-    public ApiResponse<Article> update(@Validated @RequestBody ArticleDto articleDto) {
-        return ApiResponse.success();
+
+    @ExceptionHandler(BusinessException.class)
+    public ApiResponse<Article> handleBusinessException(BusinessException e) {
+        return ApiResponse.error(e.getEResCode());
     }
 
 }

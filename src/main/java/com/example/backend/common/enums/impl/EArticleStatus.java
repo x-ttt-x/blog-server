@@ -9,15 +9,24 @@ public enum EArticleStatus implements IDbEnum<Integer> {
 
 
     /// 下架
-    DISABLED(0, "DEFAULT"),
+    DISABLED(0, "DISABLED"),
     /// 发布
-    ENABLED(1, "DISABLED"),
+    ENABLED(1, "ENABLED"),
     /// 删除
     DELETED(2, "DELETED");
 
 
     private final Integer dbValue;
     private final String value;
+
+    public static boolean isEnumNameExist(String enumName) {
+        for (EArticleStatus e : EArticleStatus.values()) {
+            if (e.value.equals(enumName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public Integer getData() {
